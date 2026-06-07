@@ -1,0 +1,51 @@
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    // File Layout
+    // "rootDir": "./src",
+    "outDir": "dist",
+
+    // Environment Settings
+    // See also https://aka.ms/tsconfig/module
+    "module": "esnext",
+    "target": "esnext",
+    // "types": [],
+    // For nodejs:
+    // "types": ["node"],
+    "lib": ["ESNext","DOM"], // 支持的类型库 esnext 包含了最新的 JavaScript 特性，DOM 包含了浏览器环境的类型定义
+    // and npm install -D @types/node
+
+    // Other Outputs
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    // Stricter Typechecking Options
+    "noUncheckedIndexedAccess": true,
+    // "exactOptionalPropertyTypes": true,
+
+    // Style Options
+    // "noImplicitReturns": true,
+    // "noImplicitOverride": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noFallthroughCasesInSwitch": true,
+    // "noPropertyAccessFromIndexSignature": true,
+
+    // Recommended Options
+    "strict": false, // 严格模式关闭，可用any类型
+    "jsx": "preserve",
+    "resolveJsonModule": true, // 允许导入 JSON 模块
+    "verbatimModuleSyntax": true,
+    "esModuleInterop": true, // 允许通过es6模块语法导入CommonJS模块
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+
+    "baseUrl": ".",// 以项目根目录为基础路径
+    "paths": { // 配置路径别名,方便导入模块
+      "@vue/*": ["packages/*/src"] // 将 @ 映射到 packages 目录
+    }
+    // "moduleDetection": "force",
+    // "skipLibCheck": true,
+  }
+}
