@@ -1,6 +1,7 @@
 {
   "private": "true",
   "dependencies": {
+    "@vue/reactivity": "^3.5.35",
     "pnpm": "^11.5.2"
   },
   "scripts": {
