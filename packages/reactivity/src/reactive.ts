@@ -1,29 +1,9 @@
 import { isObject } from "@vue/shared";
+import {ReactiveFlags,mutableHandlers} from './baseHandler'
 
 // 记录所有以及创建的代理对象，可复用
 // 避免重复创建相同的变量导致内存浪费
 const reactiveMap=new WeakMap();// 使用weakMap避免内存泄漏
-enum ReactiveFlags{
-    IS_REACTIVE='__v_isReactive' // 是否被代理过的标记
-}
-const mutableHandlers:ProxyHandler<any>={
-    get(target,key,recevier){
-        if(key===ReactiveFlags.IS_REACTIVE) return true;//检查是否为已经被代理过的
-        return Reflect.get(target,key);
-    },
-    set(target,key,value,recevier){
-       if(Reflect.get(target,key)===value)
-       {
-            return true;
-       }
-        return true;
-    }
-}
-
-export function reactive(target:Object) {
-    return creaeteReactiveObject(target)
-}
-
 
 function creaeteReactiveObject(target:Object){
     if(!isObject(target)){
@@ -41,4 +21,8 @@ function creaeteReactiveObject(target:Object){
     let proxy=new Proxy(target,mutableHandlers);
     reactiveMap.set(target,proxy) // 将已经创建的对象插入weakMap
     return proxy;
+}
+
+export function reactive(target:Object) {
+    return creaeteReactiveObject(target)
 }
