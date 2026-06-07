@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script type="module">
+        // vue原生
+        // import {
+        //     reactive,effect
+        // } from '/node_modules/@vue/reactivity/dist/reactivity.esm-browser.js'
+
+        //自封装
+        import {reactive,effect} from "./reactivity.js"
+        
+        const state=reactive({name:'niubi',age:22});
+        const state1=reactive({name:'niubi',age:22})
+        const state2=reactive(state1)
+        console.log(state===state1) // true,优化，响应式对象不重复代理值相同的对象
+        console.log(state1===state2) // true, 响应式对象不得被重复代理
+        // effect(()=>{ //数据变化触发effect执行传入给他的回调函数，组件、watch、computed都基于此实现
+        //     app.innerHTML=`姓名：${state.name},年龄${state.age}`
+        // });
+        // setInterval(()=>{
+        //     state.age++;
+        // },1000)
+    </script>
+</body>
+</html>
