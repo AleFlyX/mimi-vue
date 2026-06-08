@@ -2,6 +2,9 @@
 export let activeEffect=null;
 class ReactiveEffect{
     active=true;// 这个effect是否激活，默认为true
+    _trackId=0;
+    deps=[];
+    _depsLength=0;    
     // fn是用户传入的函数，
     // scheduler是fn中依赖的数据发生变化时，用户自定义的调度函数
     constructor(public fn,public scheduler?){}
@@ -39,4 +42,29 @@ export function effect(fn,options={}) {
     _effect.run();
     // console.log("_effect run ")
     return _effect;
+}
+
+/**
+ * trackEffect 是建立双向记录的核心函数：
+ * 既让属性知道自己影响了哪些 effect，
+ * 也让 effect 记住自己订阅了哪些属性
+ * @param effect 
+ * @param dep 
+ */
+export function trackEffect(effect,dep){
+    // 在targetMap=>target=>key=>map中记录这个依赖，
+    // 以正在触发effect的effect为key，其effect的id为值
+    // 这样完成了跟踪依赖
+    dep.set(effect,effect._trackId);
+    
+    // 
+    effect.deps[effect._depsLength++]=dep;
+}
+
+export function triggerEffects(dep){
+    for(const effect of dep){ // 遍历执行每个依赖的scheduler
+        if(effect.scheduler){ // 如果依赖的effect有scheduler
+            effect.scheduler(); // 执行
+        }
+    }
 }

@@ -1,5 +1,5 @@
 import { activeEffect } from "./effect";
-import { track } from "./reactiveEffect";
+import { track,trigger} from "./reactiveEffect";
 /**
  * 代理对象的标记枚举
  * 通过在代理对象上设置一个特殊的属性来标记它已经被代理过了，这样在后续的操作中就可以通过这个属性来判断对象是否已经被代理过了，避免重复代理。
@@ -28,11 +28,14 @@ export const mutableHandlers:ProxyHandler<any>={
     },
     set(target,key,value,receiver){
        
-       // 当设置值的时候，应该触发依赖更新，应该将这个属性对应的effect函数重新执行
-        if(Reflect.get(target,key,receiver)===value)
-       {
-            return true;
-       }
-        return Reflect.set(target,key,value,receiver);
+        // 当设置值的时候，应该触发依赖更新，应该将这个属性对应的effect函数重新执行
+        let oldVelue=target[key];
+        let result=Reflect.set(target,key,value,receiver);
+        if(oldVelue!==value)
+        {
+            // 若值不一样，需触发页面更新
+            trigger(target,key,value,oldVelue);
+        }
+       return result;
     }
 }
