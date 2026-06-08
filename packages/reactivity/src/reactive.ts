@@ -5,14 +5,17 @@ import {ReactiveFlags,mutableHandlers} from './baseHandler'
 // 避免重复创建相同的变量导致内存浪费
 const reactiveMap=new WeakMap();// 使用weakMap避免内存泄漏
 
-function creaeteReactiveObject(target:Object){
+function createReactiveObject(target:Object):Object{
     if(!isObject(target)){
         return target;
     }
-    // 对同值对象进行重复包裹的优化：直接将首次包裹这个值的proxy对象返回
+    //  针对同一原始对象的缓存复用,避免重复创建代理对象导致内存浪费
     const existProxy=reactiveMap.get(target);
-    if(existProxy) return existProxy; //复用已经存在的proxy
+    if(existProxy){
+        console.log('复用已经存在的proxy对象',existProxy);
+        return existProxy; //复用已经存在的proxy
 
+    }
     // 对另一个响应式对象包裹的优化:直接返回这个响应式对象
     // 读取target[ReactiveFlags.IS_REACTIVE]，若target对象为proxy,
     // 则会触发其内部get函数，若这个enum key的值为true，则说明是proxy,无需包装直接返回
@@ -24,5 +27,5 @@ function creaeteReactiveObject(target:Object){
 }
 
 export function reactive(target:Object) {
-    return creaeteReactiveObject(target)
+    return createReactiveObject(target)
 }

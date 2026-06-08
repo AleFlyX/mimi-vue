@@ -15,15 +15,35 @@
 
         //自封装
         import {reactive,effect} from "./reactivity.js"
-        
-        const state=reactive({name:'niubi',age:22});
-        const state1=reactive({name:'niubi',age:22})
+        const ori={name:'niubi',age:22}
+        const state=reactive(ori);
+        const state1=reactive(ori);
         const state2=reactive(state1)
         console.log(state===state1) // true,优化，响应式对象不重复代理值相同的对象
         console.log(state1===state2) // true, 响应式对象不得被重复代理
-        // effect(()=>{ //数据变化触发effect执行传入给他的回调函数，组件、watch、computed都基于此实现
-        //     app.innerHTML=`姓名：${state.name},年龄${state.age}`
-        // });
+        effect(()=>{ //数据变化触发effect执行传入给他的回调函数，组件、watch、computed都基于此实现
+            app.innerHTML=`姓名：${state.name},年龄${state.age}`
+        });
+        effect(()=>{ //数据变化触发effect执行传入给他的回调函数，组件、watch、computed都基于此实现
+            app.innerHTML+=`姓名：${state.name}`
+        });
+        state.age++;
+
+        // effect(()=>{ 
+        //     console.log('1',state.name)
+
+        //     effect(()=>{
+        //         console.log('2',state.name)
+        //     })
+
+        //     console.log('3',state.name)
+            
+        // })
+        // console.log(state.age)
+        // _eff.run();
+        // effect(()=>{
+
+        // })
         // setInterval(()=>{
         //     state.age++;
         // },1000)

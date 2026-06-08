@@ -1,3 +1,5 @@
+import { activeEffect } from "./effect";
+import { track } from "./reactiveEffect";
 /**
  * 代理对象的标记枚举
  * 通过在代理对象上设置一个特殊的属性来标记它已经被代理过了，这样在后续的操作中就可以通过这个属性来判断对象是否已经被代理过了，避免重复代理。
@@ -20,7 +22,8 @@ export const mutableHandlers:ProxyHandler<any>={
     get(target,key,receiver){ //receiver是代理对象本身
         if(key===ReactiveFlags.IS_REACTIVE) return true;//检查是否为已经被代理过的
         // 当取值的时候，应该触发依赖收集，应该将这个属性和当前的effect函数关联起来
-        
+        track(target,key)
+        // console.log('副作用函数',activeEffect,key)
         return Reflect.get(target,key,receiver);
     },
     set(target,key,value,receiver){
