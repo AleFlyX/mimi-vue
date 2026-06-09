@@ -24,10 +24,13 @@
         effect(()=>{ //数据变化触发effect执行传入给他的回调函数，组件、watch、computed都基于此实现
             app.innerHTML=`姓名：${state.name},年龄${state.age}`
         });
-        effect(()=>{ //数据变化触发effect执行传入给他的回调函数，组件、watch、computed都基于此实现
-            app.innerHTML+=`姓名：${state.name}`
-        });
-        state.age++;
+        // effect(()=>{ //数据变化触发effect执行传入给他的回调函数，组件、watch、computed都基于此实现
+        //     app.innerHTML+=`姓名：${state.name}`
+        // });
+        // state.age++;
+        // setTimeout(()=>{
+        //     state.age++;
+        // },2000)
 
         // effect(()=>{ 
         //     console.log('1',state.name)
@@ -44,9 +47,10 @@
         // effect(()=>{
 
         // })
-        // setInterval(()=>{
-        //     state.age++;
-        // },1000)
+        setInterval(()=>{
+            state.age++;
+            console.log(state.age)
+        },1000)
     </script>
 </body>
 </html>
